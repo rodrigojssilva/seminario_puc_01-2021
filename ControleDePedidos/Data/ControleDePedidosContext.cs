@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ControleDePedidos.Models;
 using Microsoft.EntityFrameworkCore;
-using ControleDePedidos.Models;
 
 namespace ControleDePedidos.Data
 {
@@ -14,6 +10,6 @@ namespace ControleDePedidos.Data
         {
         }
 
-        public DbSet<ControleDePedidos.Models.Cliente> Cliente { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
     }
 }

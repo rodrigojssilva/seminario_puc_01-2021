@@ -16,38 +16,51 @@ namespace ControleDePedidos.Controllers
     public class ClientesController : ControllerBase
     {
         private readonly ControleDePedidosContext _context;
+        private readonly IDataRepository<Cliente> _clienteRepository;
 
-        public ClientesController(ControleDePedidosContext context)
+        public ClientesController(ControleDePedidosContext context,
+                                  IDataRepository<Cliente> clienteRepository)
         {
             _context = context;
+            _clienteRepository = clienteRepository;
         }
 
         // GET: api/Clientes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cliente>>> GetCliente()
+        public IEnumerable<Cliente> GetCliente()
         {
-            return await _context.Cliente.ToListAsync();
+            return _context.Clientes.OrderBy(x => x.Nome);
         }
 
         // GET: api/Clientes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cliente>> GetCliente(int id)
+        public async Task<ActionResult<Cliente>> GetCliente([FromRoute] int id)
         {
-            var cliente = await _context.Cliente.FindAsync(id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var cliente = await _context.Clientes.FindAsync(id);
 
             if (cliente == null)
             {
                 return NotFound();
             }
 
-            return cliente;
+            return Ok(cliente);
         }
 
         // PUT: api/Clientes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCliente(int id, Cliente cliente)
+        public async Task<IActionResult> PutCliente([FromRoute] int id, [FromBody] Cliente cliente)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+
+            }
             if (id != cliente.ClienteId)
             {
                 return BadRequest();
@@ -57,7 +70,8 @@ namespace ControleDePedidos.Controllers
 
             try
             {
-                await _context.SaveChangesAsync();
+                _clienteRepository.Update(cliente);
+                var save = await _clienteRepository.SaveAsync(cliente);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -71,39 +85,49 @@ namespace ControleDePedidos.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok("Cliente atualizado com sucesso!");
         }
 
         // POST: api/Clientes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
+        public async Task<ActionResult<Cliente>> PostCliente([FromBody] Cliente cliente)
         {
-            _context.Cliente.Add(cliente);
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _clienteRepository.Add(cliente);
+            await _clienteRepository.SaveAsync(cliente);
 
             return CreatedAtAction("GetCliente", new { id = cliente.ClienteId }, cliente);
         }
 
         // DELETE: api/Clientes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCliente(int id)
+        public async Task<IActionResult> DeleteCliente([FromRoute] int id)
         {
-            var cliente = await _context.Cliente.FindAsync(id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Dados inválidos!");
+            }
+
+            var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null)
             {
                 return NotFound();
             }
 
-            _context.Cliente.Remove(cliente);
+            _clienteRepository.Delete(cliente);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(cliente);
         }
 
         private bool ClienteExists(int id)
         {
-            return _context.Cliente.Any(e => e.ClienteId == id);
+            return _context.Clientes.Any(e => e.ClienteId == id);
         }
     }
 }

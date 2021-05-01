@@ -30,13 +30,24 @@ namespace ControleDePedidos
         {
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ControleDePedidos", Version = "v1" });
             });
+                        
+            services.AddDbContext<ControleDePedidosContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ControleDePedidosContext")));
 
-            services.AddDbContext<ControleDePedidosContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ControleDePedidosContext")));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.SetIsOriginAllowed(_ => true)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
+
+            services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,15 +61,18 @@ namespace ControleDePedidos
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
+            app.UseCors("CorsPolicy");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
