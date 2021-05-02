@@ -7,12 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ControleDePedidos.Data;
 using ControleDePedidos.Models;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Net;
 
 namespace ControleDePedidos.Controllers
 {
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
+    [SwaggerTag(description: "Controle de todos os cadastros de clientes!")]
     public class ClientesController : ControllerBase
     {
         private readonly ControleDePedidosContext _context;
@@ -25,20 +28,31 @@ namespace ControleDePedidos.Controllers
             _clienteRepository = clienteRepository;
         }
 
-        // GET: api/Clientes
+        /// <summary>
+        /// Retorna todos os clientes cadastrados em ordem alfabética
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<Cliente> GetCliente()
         {
             return _context.Clientes.OrderBy(x => x.Nome);
         }
 
-        // GET: api/Clientes/5
+        /// <summary>
+        /// Retorna um único cliente de acordo com o Id buscado
+        /// </summary>
+        /// <response code="417">Se o Id for 999</response>     
         [HttpGet("{id}")]
         public async Task<ActionResult<Cliente>> GetCliente([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            if(id == 999)
+            {
+                return new ObjectResult("Você não pode buscar por 999.") { StatusCode = (int) HttpStatusCode.ExpectationFailed };
             }
 
             var cliente = await _context.Clientes.FindAsync(id);
@@ -51,8 +65,20 @@ namespace ControleDePedidos.Controllers
             return Ok(cliente);
         }
 
-        // PUT: api/Clientes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Atualiza as informações do cliente
+        /// </summary>
+        /// <remarks>
+        /// Exemplo: 
+        /// 
+        ///     PUT
+        ///     {
+        ///         "clienteId": 1,
+        ///         "nome": "Nome do Cliente",
+        ///         "documento": "111.222.333-96"
+        ///     }
+        ///     
+        /// </remarks>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCliente([FromRoute] int id, [FromBody] Cliente cliente)
         {
@@ -88,8 +114,20 @@ namespace ControleDePedidos.Controllers
             return Ok("Cliente atualizado com sucesso!");
         }
 
-        // POST: api/Clientes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Cria um cliente no banco de dados
+        /// </summary>
+        /// <remarks>
+        /// Exemplo: 
+        /// 
+        ///     POST
+        ///     {
+        ///         "clienteId": 0,
+        ///         "nome": "Nome do Cliente",
+        ///         "documento": "111.222.333-96"
+        ///     }
+        ///     
+        /// </remarks>
         [HttpPost]
         public async Task<ActionResult<Cliente>> PostCliente([FromBody] Cliente cliente)
         {
@@ -104,8 +142,14 @@ namespace ControleDePedidos.Controllers
             return CreatedAtAction("GetCliente", new { id = cliente.ClienteId }, cliente);
         }
 
-        // DELETE: api/Clientes/5
+        /// <summary>
+        /// Deleta um cliente do banco de dados
+        /// </summary>                
         [HttpDelete("{id}")]
+        [SwaggerOperation("DeleteOperation")]
+        [SwaggerResponse(200, Type = typeof(string), Description = "Cliente deletado!")]
+        [SwaggerResponse(500, Type = typeof(string), Description = "Erro interno.")]
+        [SwaggerResponse(404, Type = typeof(string), Description = "Cliente não encontrado.")]
         public async Task<IActionResult> DeleteCliente([FromRoute] int id)
         {
             if (!ModelState.IsValid)

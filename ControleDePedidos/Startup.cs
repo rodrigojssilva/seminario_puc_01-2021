@@ -1,18 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using ControleDePedidos.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ControleDePedidos.Data;
+using System.IO;
+using System.Reflection;
 
 namespace ControleDePedidos
 {
@@ -31,9 +28,24 @@ namespace ControleDePedidos
 
             services.AddControllers();
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ControleDePedidos", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo 
+                { 
+                    Title = "ControleDePedidos", 
+                    Version = "v1",
+                    Description = "Controle de pedidos realizado para a Semana da Computação 01/2021",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Rodrigo J. S. Silva",
+                        Email = "rodrigo@kapibara.com.br",
+                        Url = new Uri("https://github.com/rodrigojssilva"),
+                    },
+                });
+
+                options.EnableAnnotations();
+                options.IncludeXmlComments(XmlCommentsFilePath);
             });
                         
             services.AddDbContext<ControleDePedidosContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ControleDePedidosContext")));
@@ -73,6 +85,16 @@ namespace ControleDePedidos
                 endpoints.MapControllers();
             });
 
+        }
+
+        static string XmlCommentsFilePath
+        {
+            get
+            {
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
+                return Path.Combine(basePath, fileName);
+            }
         }
     }
 }

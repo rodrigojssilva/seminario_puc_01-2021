@@ -133,3 +133,6 @@ E:\GOOGLE_DRIVE\SEMINÁRIO_PUC_1-2021\PROJETOS\ControleDePedidos\ControleDePedid
 E:\GOOGLE_DRIVE\SEMINÁRIO_PUC_1-2021\PROJETOS\ControleDePedidos\ControleDePedidos\bin\Debug\net5.0\runtimes\win-arm64\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
 E:\GOOGLE_DRIVE\SEMINÁRIO_PUC_1-2021\PROJETOS\ControleDePedidos\ControleDePedidos\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 E:\GOOGLE_DRIVE\SEMINÁRIO_PUC_1-2021\PROJETOS\ControleDePedidos\ControleDePedidos\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+E:\GOOGLE_DRIVE\SEMINÁRIO_PUC_1-2021\PROJETOS\ControleDePedidos\ControleDePedidos\bin\Debug\net5.0\ControleDePedidos.xml
+E:\GOOGLE_DRIVE\SEMINÁRIO_PUC_1-2021\PROJETOS\ControleDePedidos\ControleDePedidos\bin\Debug\net5.0\Microsoft.Extensions.PlatformAbstractions.dll
+E:\GOOGLE_DRIVE\SEMINÁRIO_PUC_1-2021\PROJETOS\ControleDePedidos\ControleDePedidos\bin\Debug\net5.0\Swashbuckle.AspNetCore.Annotations.dll
