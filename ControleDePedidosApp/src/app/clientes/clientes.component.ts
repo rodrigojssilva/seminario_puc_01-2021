@@ -12,21 +12,22 @@ import { ClienteService } from 'src/services/cliente.service';
 export class ClientesComponent implements OnInit {
   clientes: Observable<Cliente[]> = of([]);
 
-  constructor(private blogPostService: ClienteService) {
-  }
+  constructor(
+    private clienteService: ClienteService
+  ) { }
 
   ngOnInit(): void {
     this.loadClientes();
   }
 
   loadClientes() {
-    this.clientes = this.blogPostService.getClientes();
+    this.clientes = this.clienteService.getClientes();
   }
 
   delete(clienteId: number = 0) {
     const ans = confirm('Deseja realmente excluir o cliente: ' + clienteId);
     if (ans) {
-      this.blogPostService.deleteCliente(clienteId).subscribe((data) => {
+      this.clienteService.deleteCliente(clienteId).subscribe((data) => {
         this.loadClientes();
       });
     }

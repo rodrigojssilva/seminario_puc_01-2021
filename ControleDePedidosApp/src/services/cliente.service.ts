@@ -31,8 +31,8 @@ export class ClienteService {
     );
   }
 
-  getCliente(postId: number): Observable<Cliente> {
-      return this.http.get<Cliente>(this.myAppUrl + this.myApiUrl + postId)
+  getCliente(clienteId: number): Observable<Cliente> {
+      return this.http.get<Cliente>(this.myAppUrl + this.myApiUrl + clienteId)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -40,23 +40,23 @@ export class ClienteService {
   }
 
   saveCliente(cliente: Cliente): Observable<Cliente> {
-      return this.http.post<Cliente>(this.myAppUrl + this.myApiUrl, JSON.stringify(Cliente), this.httpOptions)
+      return this.http.post<Cliente>(this.myAppUrl + this.myApiUrl, JSON.stringify(cliente), this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
       );
   }
 
-  updateCliente(postId: number, cliente: Cliente): Observable<Cliente> {
-      return this.http.put<Cliente>(this.myAppUrl + this.myApiUrl + postId, JSON.stringify(Cliente), this.httpOptions)
+  updateCliente(clienteId: number, cliente: Cliente): Observable<Cliente> {
+      return this.http.put<Cliente>(this.myAppUrl + this.myApiUrl + clienteId, JSON.stringify(cliente), this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
       );
   }
 
-  deleteCliente(postId: number): Observable<Cliente> {
-      return this.http.delete<Cliente>(this.myAppUrl + this.myApiUrl + postId)
+  deleteCliente(clienteId: number): Observable<Cliente> {
+      return this.http.delete<Cliente>(this.myAppUrl + this.myApiUrl + clienteId)
       .pipe(
         retry(1),
         catchError(this.errorHandler)

@@ -8,6 +8,7 @@ import { ClienteComponent } from './cliente/cliente.component';
 import { ClienteAddEditComponent } from './cliente-add-edit/cliente-add-edit.component';
 import { ClienteService } from 'src/services/cliente.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [
     ClienteService
