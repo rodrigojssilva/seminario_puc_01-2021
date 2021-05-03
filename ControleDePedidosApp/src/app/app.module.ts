@@ -7,6 +7,7 @@ import { ClientesComponent } from './clientes/clientes.component';
 import { ClienteComponent } from './cliente/cliente.component';
 import { ClienteAddEditComponent } from './cliente-add-edit/cliente-add-edit.component';
 import { ClienteService } from 'src/services/cliente.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ClienteService } from 'src/services/cliente.service';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [
