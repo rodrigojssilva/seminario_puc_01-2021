@@ -8,6 +8,9 @@ import { ClienteComponent } from './cliente/cliente.component';
 import { ClienteAddEditComponent } from './cliente-add-edit/cliente-add-edit.component';
 import { ClienteService } from 'src/services/cliente.service';
 import { HttpClientModule } from '@angular/common/http';
+import * as ApiServiceProxies from 'src/services/service-proxies';
+import { API_BASE_URL } from 'src/services/service-proxies';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -22,8 +25,16 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule
   ],
   providers: [
-    ClienteService
+    { provide: API_BASE_URL, useFactory: getRemoteServiceBaseUrl },
+
+    ClienteService,
+    ApiServiceProxies.ClientesServiceProxy
   ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
+
+export function getRemoteServiceBaseUrl(): string {
+  return environment.appUrl;
+}

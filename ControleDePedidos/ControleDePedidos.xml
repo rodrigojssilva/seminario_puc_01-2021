@@ -4,7 +4,7 @@
         <name>ControleDePedidos</name>
     </assembly>
     <members>
-        <member name="M:ControleDePedidos.Controllers.ClientesController.GetCliente">
+        <member name="M:ControleDePedidos.Controllers.ClientesController.GetAllClientes">
             <summary>
             Retorna todos os clientes cadastrados em ordem alfabética
             </summary>

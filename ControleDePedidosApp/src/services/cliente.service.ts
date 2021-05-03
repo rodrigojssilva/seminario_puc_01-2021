@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Cliente } from '../models/cliente';
+import { ClienteX } from '../models/cliente';
 
 @Injectable({
   providedIn: 'root'
@@ -23,40 +23,40 @@ export class ClienteService {
       this.myApiUrl = 'api/Clientes/';
   }
 
-  getClientes(): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(this.myAppUrl + this.myApiUrl)
+  getClientes(): Observable<ClienteX[]> {
+    return this.http.get<ClienteX[]>(this.myAppUrl + this.myApiUrl)
     .pipe(
       retry(1),
       catchError(this.errorHandler)
     );
   }
 
-  getCliente(postId: number): Observable<Cliente> {
-      return this.http.get<Cliente>(this.myAppUrl + this.myApiUrl + postId)
+  getCliente(postId: number): Observable<ClienteX> {
+      return this.http.get<ClienteX>(this.myAppUrl + this.myApiUrl + postId)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
       );
   }
 
-  saveCliente(cliente: Cliente): Observable<Cliente> {
-      return this.http.post<Cliente>(this.myAppUrl + this.myApiUrl, JSON.stringify(Cliente), this.httpOptions)
+  saveCliente(cliente: ClienteX): Observable<ClienteX> {
+      return this.http.post<ClienteX>(this.myAppUrl + this.myApiUrl, JSON.stringify(ClienteX), this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
       );
   }
 
-  updateCliente(postId: number, cliente: Cliente): Observable<Cliente> {
-      return this.http.put<Cliente>(this.myAppUrl + this.myApiUrl + postId, JSON.stringify(Cliente), this.httpOptions)
+  updateCliente(postId: number, cliente: ClienteX): Observable<ClienteX> {
+      return this.http.put<ClienteX>(this.myAppUrl + this.myApiUrl + postId, JSON.stringify(ClienteX), this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
       );
   }
 
-  deleteCliente(postId: number): Observable<Cliente> {
-      return this.http.delete<Cliente>(this.myAppUrl + this.myApiUrl + postId)
+  deleteCliente(postId: number): Observable<ClienteX> {
+      return this.http.delete<ClienteX>(this.myAppUrl + this.myApiUrl + postId)
       .pipe(
         retry(1),
         catchError(this.errorHandler)

@@ -12,7 +12,7 @@ using System.Net;
 
 namespace ControleDePedidos.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [Produces("application/json")]
     [ApiController]
     [SwaggerTag(description: "Controle de todos os cadastros de clientes!")]
@@ -33,7 +33,7 @@ namespace ControleDePedidos.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<Cliente> GetCliente()
+        public IEnumerable<Cliente> GetAllClientes()
         {
             return _context.Clientes.OrderBy(x => x.Nome);
         }
